@@ -62,6 +62,10 @@ export class TextService {
   }
 
   getSynonyms(word: string): Observable<string[]> {
+    if (word[word.length - 1].toLowerCase() === 's') {
+      word = word.slice(0, -1); // API seems not to handle plurals
+    }
+
     return this.http.get<DatamuseDTO[]>(`https://api.datamuse.com/words?rel_syn=${word}`).pipe(
       map(data => data.map(item => item.word))
     );
