@@ -1,11 +1,13 @@
 import {Injectable} from '@angular/core';
 import {Observable, of, Subject} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
 
 import {WordComponent} from '../word/word.component';
 import {StyleDTO} from '../style.dto';
-import {withLatestFrom} from 'rxjs/operators';
+import {map, withLatestFrom} from 'rxjs/operators';
 import {filter} from 'rxjs/internal/operators/filter';
 import {StylingEnum} from '../styling.enum';
+import {DatamuseDTO} from '../datamuse.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +15,10 @@ import {StylingEnum} from '../styling.enum';
 export class TextService {
   public selectedWord$ = new Subject<WordComponent>();
   public selectStyle$ = new Subject<StyleDTO>();
+
   private previousWord: WordComponent;
 
-  constructor() {
+  constructor(private http: HttpClient) {
     this.selectStyle$.pipe(
       withLatestFrom(this.selectedWord$, (styleCommand, word) => ({styleCommand, word})),
       filter(({word}) => word !== null),
@@ -48,6 +51,7 @@ export class TextService {
       this.previousWord.isSelected = false;
     }
     wordComponent.isSelected = true;
+    this.getSynonyms(wordComponent.word).subscribe(console.log);
 
     this.selectedWord$.next(wordComponent);
     this.previousWord = wordComponent;
@@ -55,5 +59,11 @@ export class TextService {
 
   setStyle(styleCommand: StyleDTO) {
     this.selectStyle$.next(styleCommand);
+  }
+
+  getSynonyms(word: string): Observable<string[]> {
+    return this.http.get<DatamuseDTO[]>(`https://api.datamuse.com/words?rel_syn=${word}`).pipe(
+      map(data => data.map(item => item.word))
+    );
   }
 }
