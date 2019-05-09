@@ -33,6 +33,9 @@ export class TextService {
         case StylingEnum.UNDERLINE:
           word.isUnderline = !word.isUnderline;
           break;
+        case StylingEnum.COLOR:
+          word.color = styleCommand.parameters[0];
+          break;
       }
     });
   }

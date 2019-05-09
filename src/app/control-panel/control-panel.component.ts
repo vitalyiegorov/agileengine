@@ -5,29 +5,35 @@ import {TextService} from '../text-service/text.service';
 import {StyleDTO} from '../style.dto';
 import {StylingEnum} from '../styling.enum';
 import {WordComponent} from '../word/word.component';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-control-panel',
   templateUrl: './control-panel.component.html',
   styleUrls: ['./control-panel.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ControlPanelComponent implements OnInit, OnDestroy {
   public styleSelect = new Subject<StyleDTO>();
   public stylingEnum = StylingEnum;
   public selectedWord$: Observable<WordComponent>;
+  public colors = ['black', 'red', 'green'];
 
-  private subscription: Subscription;
+  private unsubscribe$ = new Subject();
 
   constructor(private textService: TextService) {
   }
 
   ngOnInit(): void {
-    this.subscription = this.styleSelect.subscribe(styleCommand => this.textService.setStyle(styleCommand));
+    this.styleSelect
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(styleCommand => this.textService.setStyle(styleCommand));
+
     this.selectedWord$ = this.textService.selectedWord$.asObservable();
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

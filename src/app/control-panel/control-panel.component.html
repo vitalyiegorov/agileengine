@@ -2,4 +2,7 @@
   <button class="format-action" [ngClass]="{selected: data.word?.isBold}" type="button" (click)="styleSelect.next({ command: stylingEnum.BOLD })"><b>B</b></button>
   <button class="format-action" [ngClass]="{selected: data.word?.isItalic}" type="button" (click)="styleSelect.next({ command: stylingEnum.ITALIC })"><i>I</i></button>
   <button class="format-action" [ngClass]="{selected: data.word?.isUnderline}" type="button" (click)="styleSelect.next({ command: stylingEnum.UNDERLINE })"><u>U</u></button>
+  <select class="format-action" (change)="styleSelect.next({ command: stylingEnum.COLOR, parameters: [$event.target?.value] })">
+    <option *ngFor="let color of colors" [selected]="color === data.word?.color" >{{ color }}</option>
+  </select>
 </div>

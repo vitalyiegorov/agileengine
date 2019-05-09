@@ -1,5 +1,6 @@
 export enum StylingEnum {
   BOLD,
   ITALIC,
-  UNDERLINE
+  UNDERLINE,
+  COLOR
 }

@@ -11,6 +11,7 @@ export class WordComponent {
   @Input() @HostBinding('class.italic') isItalic = false;
   @Input() @HostBinding('class.underline') isUnderline = false;
   @Input() @HostBinding('class.selected') isSelected = false;
+  @Input() @HostBinding('style.color') color = 'black';
   @Input() word = '';
 
   @Output() onClick = new EventEmitter<boolean>();
