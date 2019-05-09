@@ -1,5 +1,5 @@
-<div class="format-actions">
-  <button class="format-action" type="button"><b>B</b></button>
-  <button class="format-action" type="button"><i>I</i></button>
-  <button class="format-action" type="button"><u>U</u></button>
+<div class="format-actions" *ngIf="{ word: selectedWord$ | async } as data">
+  <button class="format-action" [ngClass]="{selected: data.word?.isBold}" type="button" (click)="styleSelect.next({ command: stylingEnum.BOLD })"><b>B</b></button>
+  <button class="format-action" [ngClass]="{selected: data.word?.isItalic}" type="button" (click)="styleSelect.next({ command: stylingEnum.ITALIC })"><i>I</i></button>
+  <button class="format-action" [ngClass]="{selected: data.word?.isUnderline}" type="button" (click)="styleSelect.next({ command: stylingEnum.UNDERLINE })"><u>U</u></button>
 </div>

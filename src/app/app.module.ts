@@ -7,6 +7,7 @@ import { HeaderComponent } from './header/header.component';
 import { FormsModule } from '@angular/forms';
 import { TextService } from './text-service/text.service';
 import { FooterComponent } from './footer/footer.component';
+import { WordComponent } from './word/word.component';
 
 @NgModule({
   declarations: [
@@ -14,8 +15,10 @@ import { FooterComponent } from './footer/footer.component';
     FileComponent,
     ControlPanelComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    WordComponent,
   ],
+  entryComponents: [WordComponent],
   imports: [
     BrowserModule,
     FormsModule
